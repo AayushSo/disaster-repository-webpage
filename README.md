@@ -13,3 +13,17 @@
     `python run.py`
 
 3. Go to  http://127.0.0.1:3001
+
+### Important Files:
+1. **process_data.py** : Used to load raw messages data, clean the data, and finally store as a database
+2. **train_classifier.py** : Used to load database and train a classifier using database
+3. **run.py** : Script used to generate/manage frontend of the site.
+4. *master.html* : Main page of the site
+5. *go.html* : Returns predicted message category based on user input
+6. *ETL Pipeline Preparation.html* and *ML Pipeline Preparation.html* : Jupyter notebook detailing preparation of pipelines for ETL and ML pipelines respectively. The jupyter nb's can be viewed directly in the *jupyter_nb_repository* directory
+
+## Example Output
+![webpage](https://github.com/AayushSo/disaster-repository-webpage/blob/main/project_test_msg.png?raw=True)
+
+
+
