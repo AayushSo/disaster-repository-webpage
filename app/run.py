@@ -93,6 +93,17 @@ def go():
     )
 
 
+# ETL pipeline preparation HTML
+@app.route('/etl-pipeline')
+def etl_pipeline():
+    return render_template('ETL Pipeline Preparation.html')
+
+# ETL pipeline preparation HTML
+@app.route('/ml-pipeline')
+def ml_pipeline():
+    return render_template('ML Pipeline Preparation.html')
+
+
 def main():
     app.run(host='0.0.0.0', port=3001, debug=True)
 
