@@ -30,6 +30,15 @@ import joblib
 
 
 def load_data(database_filepath):
+	"""
+	Load dataset from file
+	Input :
+		- database_filepath
+	Output :
+		- X : features of dataset
+		- Y : targets of dataset
+		- category_names
+	"""
 	engine = create_engine('sqlite:///{}.db'.format(database_filepath))
 	con=engine.connect()
 	df = pd.read_sql_table(database_filepath,con=con)
@@ -39,10 +48,27 @@ def load_data(database_filepath):
 	return X,Y,category_names
 
 def tokenize(text):
+	"""
+	Tokenize input text
+	Input:
+		- text : raw text
+		- output : list of tokenized text
+	"""
 	lemmatizer=WordNetLemmatizer()
 	return [ lemmatizer.lemmatize(lemmatizer.lemmatize(tok).lower().strip(),pos='v') for tok in word_tokenize(text)]
 
 def build_model():
+	"""
+	Build a pipeline including data transform and data classification steps
+	Transform stages used : 
+		- CountVectorizer
+		- TfidfTransformer
+	Classifier stages used:
+		- MultiOutputClassifier
+			* This uses RandomForestClassifier
+	Output :
+		- pipeline
+	"""
 	pipeline = Pipeline([
 	('vect',CountVectorizer(tokenizer=tokenize)),
 	('tfidf',TfidfTransformer()),
@@ -52,10 +78,20 @@ def build_model():
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
+	"""
+	Report performance of model
+	Input:
+		- model : the model (pipeline) we have used
+		- X_test : test features
+		- Y_test : test targets
+		- category_names
+	Output: NA
+	"""
 	y_pred=model.predict(X_test)
 	print(classification_report(Y_test,y_pred,target_names=category_names))
 
 def save_model(model, model_filepath):
+	""" Save model to file 'model_filepath' """
 	joblib.dump(model, model_filepath)
 	#pickle.dump(model, open(model_filepath, 'wb'))
 
