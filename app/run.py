@@ -12,6 +12,7 @@ from plotly.graph_objs import Bar
 import joblib
 from sqlalchemy import create_engine
 
+from math import log10 as log
 
 app = Flask(__name__)
 
@@ -44,6 +45,9 @@ def index():
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
     
+    categories=df.drop(['id', 'message', 'original', 'genre'],axis=1).melt().groupby('variable',as_index=False).sum().sort_values('value',ascending=False)['variable']
+    category_counts = df.drop(['id', 'message', 'original', 'genre'],axis=1).melt().groupby('variable',as_index=False).sum().sort_values('value',ascending=False)['value'].apply(lambda x: log(1+x))
+    
     # create visuals
     # TODO: Below is an example - modify to create your own visuals
     graphs = [
@@ -64,7 +68,26 @@ def index():
                     'title': "Genre"
                 }
             }
+        },
+        {
+            'data': [
+                Bar(
+                    x=categories,
+                    y=category_counts
+                )
+            ],
+
+            'layout': {
+                'title': 'Distribution of Message Categories',
+                'yaxis': {
+                    'title': "Count ( in log base 10)"
+                },
+                'xaxis': {
+                    'title': "Category"
+                }
+            }
         }
+        
     ]
     
     # encode plotly graphs in JSON

@@ -1,3 +1,7 @@
 app/__pycache__
 models/__pycache__
 models/classifier.pkl
+data/__pycache__/
+jupyter_nb_repository/.ipynb_checkpoints/
+*.pkl
+jupyter_nb_repository/*.db
